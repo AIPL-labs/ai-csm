@@ -8,9 +8,9 @@ import { getCurrentChat } from "./getCurrentChat";
 import { useCurrentChat } from "./useCurrentChat";
 import { useIsMobile } from "../common/useIsMobile";
 import { DataImage } from "../image/DataImage";
-import { Flex } from "@radix-ui/themes";
+import { Flex, type FlexProps } from "@radix-ui/themes";
 
-export const ChatWindow = () => {
+export const ChatWindow = (props: FlexProps) => {
   const { chat, messages } = useCurrentChat();
   const activeTheme = first(
     DataObjectStates.useChildDataObjects(
@@ -71,6 +71,7 @@ export const ChatWindow = () => {
         backgroundColor,
         color,
       }}
+      {...props}
     >
       <Flex
         align={"center"}

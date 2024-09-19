@@ -34,10 +34,17 @@ export default defineConfig({
     // ),
 
     // Production settings
+    // __HOME_BASE__: JSON.stringify("https://ai-worker.intelligage.workers.dev"),
+    // __PAP_ID__: JSON.stringify(
+    //   "access-point-1725571260862-23455f95-1253-4dfe-96e3-952ac6af647c"
+    // ),
+    // __APP_FRONT__: JSON.stringify("pizza-demo"),
+
+    // CSM settings
     __HOME_BASE__: JSON.stringify("https://ai-worker.intelligage.workers.dev"),
     __PAP_ID__: JSON.stringify(
-      "access-point-1725571260862-23455f95-1253-4dfe-96e3-952ac6af647c"
+      "access-point-1726605795179-62ee0b9a-1008-41ef-b63a-e4dc7d242591"
     ),
-    __APP_FRONT__: JSON.stringify("pizza-demo"),
+    __APP_FRONT__: JSON.stringify("csm-front"),
   },
 });
