@@ -1,9 +1,11 @@
 import { Box } from "@mui/material";
-import { motion } from "framer-motion";
-import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect } from "react";
 import { CSM_CONVERSATION_TYPE_INFO } from "./CSM_CONVERSATION_TYPE_INFO";
 import { CsmChatWindow } from "./CsmChatWindow";
 import { csmConvDataToSolutions } from "./dynamic/csmConvDataToSolutions";
+import { startCustomAsr } from "../../asr-custom/startCustomAsr";
+import { AiplClients } from "../../client/AiplClients";
 
 export const CustomerPage = ({
   children = [],
@@ -11,16 +13,33 @@ export const CustomerPage = ({
   children?: React.ReactNode[];
 }) => {
   // Distribute children into top, right, bottom, and left areas
-  const topChildren = children.filter((_, index) => index % 4 === 0);
-  const rightChildren = children.filter((_, index) => index % 4 === 1);
-  const bottomChildren = children.filter((_, index) => index % 4 === 2);
-  const leftChildren = children.filter((_, index) => index % 4 === 3);
+  if (children.length > 2) {
+    // get the last 4 children
+    children = children.slice(-2);
+  }
+  // const topChildren = children.filter((_, index) => index % 4 === 0);
+  // const rightChildren = children.filter((_, index) => index % 4 === 1);
+  // const bottomChildren = children.filter((_, index) => index % 4 === 2);
+  // const leftChildren = children.filter((_, index) => index % 4 === 3);
+  const topChildren = [] as React.ReactNode[];
+  const rightChildren = children.filter((_, index) => index % 2 === 0);
+  const bottomChildren = [] as React.ReactNode[];
+  const leftChildren = children.filter((_, index) => index % 2 === 1);
+  useEffect(() => {
+    startCustomAsr();
+  });
   return (
     <motion.div
       key="chatWindow"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 50 }}
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+      }}
       transition={{ duration: 0.5 }}
     >
       <Box>
@@ -46,7 +65,8 @@ export const CustomerPage = ({
             onUpdate={(data) => {
               console.log("COMPONENT STATE", data);
               csmConvDataToSolutions(
-                data as typeof CSM_CONVERSATION_TYPE_INFO.type
+                data as typeof CSM_CONVERSATION_TYPE_INFO.type,
+                CSM_CONVERSATION_TYPE_INFO.schema
               );
             }}
           />
@@ -77,10 +97,10 @@ export const CustomerPage = ({
         <Box
           sx={{
             position: "absolute",
-            top: "15vh",
+            top: "20vh",
             bottom: "15vh",
-            right: 0,
-            width: "15vw",
+            right: "1ch",
+            maxWidth: "60ch",
             display: "flex",
             height: "70vh",
             flexDirection: "column",
@@ -89,11 +109,27 @@ export const CustomerPage = ({
             overflow: "auto",
           }}
         >
-          {rightChildren.map((child, index) => (
-            <Box key={index} sx={{ margin: 1 }}>
-              {child}
-            </Box>
-          ))}
+          <AnimatePresence>
+            {rightChildren.map((child, index) => (
+              <motion.div
+                key={`rightArea-${crypto.randomUUID()}`}
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{
+                  opacity: 1,
+                }}
+                exit={{
+                  opacity: 0,
+                }}
+                transition={{ duration: 1 }}
+              >
+                <Box key={index} sx={{ margin: 1 }}>
+                  {child}
+                </Box>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </Box>
 
         {/* Bottom Area */}
@@ -123,8 +159,8 @@ export const CustomerPage = ({
             position: "absolute",
             top: "15vh",
             bottom: "15vh",
-            left: 0,
-            width: "15vw",
+            left: "1em",
+            maxWidth: "60ch",
             height: "70vh",
             display: "flex",
             flexDirection: "column",
@@ -134,9 +170,23 @@ export const CustomerPage = ({
           }}
         >
           {leftChildren.map((child, index) => (
-            <Box key={index} sx={{ margin: 1 }}>
-              {child}
-            </Box>
+            <motion.div
+              key={`leftArea-${crypto.randomUUID()}`}
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              exit={{
+                opacity: 0,
+              }}
+              transition={{ duration: 1 }}
+            >
+              <Box key={index} sx={{ margin: 1 }}>
+                {child}
+              </Box>
+            </motion.div>
           ))}
         </Box>
       </Box>

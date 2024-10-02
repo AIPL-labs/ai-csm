@@ -3,9 +3,11 @@ import { CSM_CONVERSATION_TYPE_INFO } from "../CSM_CONVERSATION_TYPE_INFO";
 import { updateCsmState } from "../CsmState";
 import { AiplClients } from "../../../client/AiplClients";
 import { getCurrentChat } from "../../../ui/chat/getCurrentChat";
+import { KNOWN_SOLUTIONS } from "./KNOWN_SOLUTIONS";
 
 export const csmConvDataToSolutions = (
-  data: typeof CSM_CONVERSATION_TYPE_INFO.type
+  data: typeof CSM_CONVERSATION_TYPE_INFO.type,
+  schema: TypeInfo["schema"]
 ) => {
   console.log("csmConvDataToSolutions: data", data);
   if (isUndefined(data)) {
@@ -16,6 +18,7 @@ export const csmConvDataToSolutions = (
 
   updateCsmState((s) => {
     s.data.push(data);
+    s.dataSchema.push({ data, schema });
   });
   findSolutions(data);
 };
@@ -26,22 +29,6 @@ export type Solution = {
   whenToUse: string;
   parameters: TypeInfo;
 };
-
-const KNOWN_SOLUTIONS: TypeInfo[] = [
-  TypeBoxes.createTypeInfo((Type) =>
-    Type.Object(
-      {
-        emailAddress: Type.String(),
-        subject: Type.String(),
-        message: Type.String(),
-      },
-      { $id: "EmailCustomerService" }
-    )
-  ),
-  TypeBoxes.createTypeInfo((Type) =>
-    Type.Object({ query: Type.String() }, { $id: "SearchSupportHistory" })
-  ),
-];
 
 const createNovelSolutionResponseTypeInfo = () => {
   return TypeBoxes.createTypeInfo((Type) => {

@@ -1,6 +1,9 @@
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { motion } from "framer-motion";
+import { AiplClients } from "../../client/AiplClients";
+import { CSM_CONVERSATION_TYPE_INFO } from "./CSM_CONVERSATION_TYPE_INFO";
+import { KNOWN_SOLUTIONS } from "./dynamic/KNOWN_SOLUTIONS";
 
 export type Page = "customer" | "dashboard" | "start" | "ai-process";
 
@@ -29,7 +32,7 @@ export const StartPage = ({
       >
         <Stack alignItems={"center"}>
           <Typography variant="h2" component="h1" gutterBottom>
-            Welcome to a New Era of Customer Service
+            Welcome to a New Era of Customer Success
           </Typography>
           <Typography variant="h5" component="h2" gutterBottom>
             Experience the Future Today
@@ -39,6 +42,19 @@ export const StartPage = ({
               <Button
                 style={{ color: "white" }}
                 onClick={() => {
+                  const client = AiplClients.createAiplClient();
+                  const systemMessage = [
+                    "The CSM knows how to do the following",
+                    "```typescript",
+                    ...KNOWN_SOLUTIONS.map((sol) => {
+                      return sol.typeDeclaration;
+                    }),
+                    "```",
+                  ].join("\n");
+                  client.startChat({
+                    schema: CSM_CONVERSATION_TYPE_INFO.schema,
+                    systemMessage,
+                  });
                   onStart("customer");
                 }}
                 variant="contained"
@@ -54,7 +70,7 @@ export const StartPage = ({
                 variant="contained"
                 color="secondary"
               >
-                Dashboard
+                Overview Dashboard
               </Button>
               <Button
                 style={{ color: "white" }}
@@ -64,7 +80,7 @@ export const StartPage = ({
                 variant="contained"
                 color="secondary"
               >
-                Process
+                AI Agent Dashboard
               </Button>
             </Stack>
           </Stack>

@@ -17,7 +17,8 @@ export const CsmChatWindow = ({
   onUpdate?: (componentState: unknown) => void;
   windowProps?: Parameters<typeof ChatWindow>[0];
 } & ThemeProps) => {
-  const { appearance = "dark" } = useAppState();
+  // const { appearance = "light" } = useAppState();
+  const appearance = "light";
   AppEvents.useEventListener(
     "client:aiplComponentUpdate",
     (message) => {

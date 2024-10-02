@@ -5,10 +5,8 @@ import { CSM_CONVERSATION_TYPE_INFO } from "./CSM_CONVERSATION_TYPE_INFO";
 
 import { CustomerPage } from "./CustomerPage";
 
-import { StartPage, type Page } from "./StartPage";
 import { DashboardPage } from "./DashboardPage";
-import { AiProcessPage } from "./ai-proccess/AiProcessPage";
-import { AiProcessPage2 } from "./ai-proccess/AiProcessPage2";
+import { StartPage, type Page } from "./StartPage";
 import { ProcessMockupPage } from "./ai-proccess/ProcessMockupPage";
 
 interface CsmAppProps {
@@ -17,7 +15,7 @@ interface CsmAppProps {
 
 export const CsmMain: React.FC<CsmAppProps> = ({ children = [] }) => {
   const [state, setState] = useState({
-    page: "ai-process" as Page,
+    page: "start" as Page,
   });
 
   return (
